@@ -12,15 +12,22 @@ passport.use(
       clientSecret: keys.googleClientSecret,
       callbackURL: '/auth/google/callback',
     },
-    (accessToken) => {
-      console.log(accessToken); //access token given to us once we are authorized
+    (accessToken, refreshToken, profile, done) => {
+      console.log('access token', accessToken); //access token given to us once we are authorized
+      console.log('refresh token', refreshToken);
+      console.log('profile', profile);
     }
   )
 );
 
-app.get('/', (req, res) => {
-  res.send({ hi: 'there!' });
-});
+app.get(
+  '/auth/google', //once a user goes to this domain, they will get kicked to the oauth flow
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })
+);
+
+app.get('/auth/google/callback', passport.authenticate('google'));
 
 // if PORT is not defined, we will use 5000
 const PORT = process.env.PORT || 5000;
