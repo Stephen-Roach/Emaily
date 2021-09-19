@@ -17,6 +17,9 @@ app.use(
   })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 require('./routes/authRoutes')(app); //invokes the function in authRoutes.js and passes app as a parameter
 
 // if PORT is not defined, we will use 5000
