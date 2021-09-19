@@ -5,6 +5,10 @@ const keys = require('../config/keys');
 
 const User = mongoose.model('users'); // fetching the users from the mongoose collection
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
 // creates a new instance of the google strategy which takes in the authentication keys as well as a callback URL
 passport.use(
   new GoogleStrategy(
