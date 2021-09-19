@@ -1,8 +1,11 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const mongoose = require('mongoose');
 const keys = require('../config/keys');
 
-//creates a new instance of the google strategy which takes in the authentication keys as well as a callback URL
+const User = mongoose.model('users'); // fetching the users from the mongoose collection
+
+// creates a new instance of the google strategy which takes in the authentication keys as well as a callback URL
 passport.use(
   new GoogleStrategy(
     {
@@ -11,9 +14,17 @@ passport.use(
       callbackURL: '/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log('access token', accessToken); //access token given to us once we are authorized
-      console.log('refresh token', refreshToken);
-      console.log('profile', profile);
+      User.findOne({ googleId: profile.id }).then((existingUser) => {
+        if (existingUser) {
+          // we already have a record with the given profile ID
+          done(null, existingUser);
+        } else {
+          // we do not have a user record with the given ID, make a new one
+          new User({ googleId: profile.id }) // creates a new instance of a user and saves it to the DB
+            .save()
+            .then((user) => done(null, user));
+        }
+      });
     }
   )
 );
