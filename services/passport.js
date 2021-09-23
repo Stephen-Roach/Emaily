@@ -26,18 +26,17 @@ passport.use(
       callbackURL: '/auth/google/callback',
       proxy: true, // fixes the security issue with the heroku http vs https domain
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleId: profile.id }).then((existingUser) => {
-        if (existingUser) {
-          // we already have a record with the given profile ID
-          done(null, existingUser);
-        } else {
-          // we do not have a user record with the given ID, make a new one
-          new User({ googleId: profile.id }) // creates a new instance of a user and saves it to the DB
-            .save()
-            .then((user) => done(null, user));
-        }
-      });
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      if (existingUser) {
+        // we already have a record with the given profile ID
+        done(null, existingUser);
+      } else {
+        // we do not have a user record with the given ID, make a new one
+        const user = await new User({ googleId: profile.id }).save(); // creates a new instance of a user and saves it to the DB
+        done(null, user);
+      }
     }
   )
 );
