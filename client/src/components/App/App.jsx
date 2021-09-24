@@ -1,19 +1,25 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from '../Header/Header';
 import Dashboard from '../Dashboard/Dashboard';
 import Landing from '../Landing/Landing';
 
 const App = () => {
   return (
-    <div>
-      <BrowserRouter>
-        <div>
-          <Route exact path='/' component={Landing} />
-          <Route path='/surveys' component={Dashboard} />
-        </div>
-      </BrowserRouter>
-    </div>
+    <Router>
+      <div className='App'>
+        <Switch>
+          <Route exact path='/'>
+            <Header />
+            <Landing />
+          </Route>
+          <Route path='/surveys'>
+            <Header />
+            <Dashboard />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
