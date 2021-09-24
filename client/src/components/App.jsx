@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Header from '../Header/Header';
-import Dashboard from '../Dashboard/Dashboard';
-import Landing from '../Landing/Landing';
+import Header from './Header/Header';
+import Dashboard from './Dashboard/Dashboard';
+import Landing from './Landing/Landing';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
-const App = () => {
+const App = (props) => {
+  useEffect(() => {
+    props.fetchUser();
+  }, [props]);
+
   return (
     <Router>
       <div className='container'>
@@ -23,4 +29,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default connect(null, actions)(App);
