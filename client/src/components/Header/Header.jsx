@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function Header(props) {
   function isLoggedIn() {
@@ -23,9 +24,9 @@ function Header(props) {
   return (
     <nav>
       <div className='nav-wrapper'>
-        <a href='/' className=' left brand-logo'>
+        <Link to={props.auth ? '/surveys' : '/'} className=' left brand-logo'>
           Emaily
-        </a>
+        </Link>
         <ul id='nav-mobile' className='right hide-on-med-and-down'>
           {isLoggedIn()}
         </ul>
