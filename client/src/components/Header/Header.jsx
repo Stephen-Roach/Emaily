@@ -1,6 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-function Header() {
+function Header(props) {
+  function isLoggedIn() {
+    switch (props.auth) {
+      case null:
+        return 'Still deciding';
+      case false:
+        return 'Im logged out';
+      default:
+        return 'Im logged in';
+    }
+  }
   return (
     <nav>
       <div className='nav-wrapper'>
@@ -8,13 +19,17 @@ function Header() {
           Emaily
         </a>
         <ul id='nav-mobile' className='right hide-on-med-and-down'>
-          <li>
+          {/* <li>
             <a href='sass.html'>Login with Google</a>
-          </li>
+          </li> */}
+          {isLoggedIn()}
         </ul>
       </div>
     </nav>
   );
 }
 
-export default Header;
+function mapStateToProps(state) {
+  return { auth: state.auth };
+}
+export default connect(mapStateToProps)(Header);
