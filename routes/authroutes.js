@@ -9,7 +9,13 @@ module.exports = (app) => {
     })
   );
 
-  app.get('/auth/google/callback', passport.authenticate('google'));
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'), // middleware will ensure user is authenticated
+    (req, res) => {
+      res.redirect('/surveys'); // user will get redirected to the surveys page
+    }
+  );
 
   app.get('/api/logout', (req, res) => {
     req.logout();

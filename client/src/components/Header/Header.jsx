@@ -5,11 +5,19 @@ function Header(props) {
   function isLoggedIn() {
     switch (props.auth) {
       case null:
-        return 'Still deciding';
+        return;
       case false:
-        return 'Im logged out';
+        return (
+          <li>
+            <a href='/auth/google'>Login with Google</a>
+          </li>
+        );
       default:
-        return 'Im logged in';
+        return (
+          <li>
+            <a href='/api/logout'>Logout</a>
+          </li>
+        );
     }
   }
   return (
@@ -19,9 +27,6 @@ function Header(props) {
           Emaily
         </a>
         <ul id='nav-mobile' className='right hide-on-med-and-down'>
-          {/* <li>
-            <a href='sass.html'>Login with Google</a>
-          </li> */}
           {isLoggedIn()}
         </ul>
       </div>
